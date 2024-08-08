@@ -541,7 +541,8 @@ function OpenAndChangeCWD(path)
 end
 
 keymap.set("n", "<leader>1", ":lua OpenAndChangeCWD('C:/Dev/dotfiles/.config/nvim')<CR>", opts)
-keymap.set("n", "<leader>2", ":lua OpenAndChangeCWD('C:/Dev/projects/c-cpp/steam-game')<CR>", opts)
+keymap.set("n", "<leader>2", ":lua OpenAndChangeCWD('C:/Dev/projects/c-cpp/tribe-game')<CR>", opts)
+keymap.set("n", "<leader>3", ":lua OpenAndChangeCWD('C:/Dev/projects/old/engine-old')<CR>", opts)
 
 -- Reload config
 keymap.set("n", "<leader><A-r>", ":source C:/Dev/dotfiles/.config/nvim/init.lua<CR>")
