@@ -18,7 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- Colorscheme
 	{ "morhetz/gruvbox" },
-	-- { "rmehri01/onenord.nvim" },
 
 	-- File management
 	{
