@@ -107,24 +107,8 @@ keymap.set("n", "<leader>tn", ":tabn<CR>", opts)
 keymap.set("n", "<leader>tp", ":tabp<CR>", opts)
 
 -- Saving and quitting
-keymap.set("n", "<C-s>", ":w<CR>", opts)
-keymap.set("i", "<C-s>", "<Esc>:w<CR>", opts)
-
--- Delete word with ctrl + backspace (note: too buggy, need alternative)
--- function DeleteWordBeforeCursor()
--- 	vim.cmd("normal! b")
--- 	vim.cmd("normal! dw")
--- end
---
--- keymap.set("i", "<C-H>", "<Esc>:lua DeleteWordBeforeCursor()<CR>a", opts)
-
--- Automatic format on save
-vim.cmd([[
-augroup FormatAutogroup
-    autocmd!
-    autocmd BufWritePost * FormatWrite
-augroup END
-]])
+keymap.set("n", "<C-s>", ":wa<CR>", opts)
+keymap.set("i", "<C-s>", "<Esc>:wa<CR>", opts)
 
 -- -------------------------------------------
 -- Plugin Keybinds
@@ -146,28 +130,12 @@ keymap.set("n", "<leader>fv", ":lua vim.cmd('Oil ' .. GetBufferDir())<CR>", opts
 keymap.set("n", "<leader>kb", ":Telescope keymaps<CR>", opts) -- [K]ey [B]indings
 keymap.set("n", "<leader>ch", ":Telescope command_history<CR>", opts) -- [C]ommand [H]istory
 
-keymap.set(
-	"n",
-	-- "<leader>ff",
-	"<leader><space>",
-	":lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({previewer=false}))<CR>",
-	opts
-) -- [F]ile [F]inder
-keymap.set("n", "<leader>fs", ":Telescope live_grep<CR>", opts) -- [F]ile [S]earch
-keymap.set("n", "<leader>fw", ":Telescope grep_string<CR>", opts) -- [F]ind [W]ord under cursor
-keymap.set("n", "<leader>fb", ":Telescope buffers<CR>", opts) -- [F]ind [B]uffer
--- keymap.set("n", "<leader>fd", ":Telescope diagnostics theme=dropdown<CR>", opts) -- [F]ind [D]iagnostics
-keymap.set(
-	"n",
-	"<leader>fd",
-	":lua require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown{layout_config = {width = 0.9}})<CR>",
-	opts
-) -- [F]ind [D]iagnostics
-keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences
+keymap.set("n", "<leader><space>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ile [F]inder
+keymap.set("n", "<leader>fs", ":Telescope live_grep<CR>", opts) -- [F]ile [S]tring
+keymap.set("n", "<leader>fw", ":Telescope grep_string<CR>", opts) -- [F]ind [W]ord "under cursor"
+keymap.set("n", "<leader>ds", ":Telescope treesitter theme=dropdown<CR>", opts) -- [D]ocument [S]ymbols
 
-keymap.set("n", "<leader>gd", ":Telescope lsp_definitions<CR>", opts) -- [G]oto [D]efinition
-keymap.set("n", "<leader>ds", ":Telescope lsp_document_symbols theme=dropdown<CR>", opts)
-keymap.set("n", "<leader>ws", ":Telescope lsp_workspace_symbols theme=dropdown<CR>", opts)
+keymap.set("n", "<leader>fb",":lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ind [B]uffer
 
 -- Fun
 keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", opts)
@@ -324,5 +292,4 @@ keymap.set("n", "<leader>3", ":lua OpenAndChangeCWD('C:/Dev/projects/old/engine-
 keymap.set("n", "<leader><A-r>", ":source C:/Dev/dotfiles/.config/nvim/init.lua<CR>")
 
 -- Complex plugin configs
-require("sanyok.lspconfig")
 require("sanyok.nvimcmp")
