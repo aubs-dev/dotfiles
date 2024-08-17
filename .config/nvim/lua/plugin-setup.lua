@@ -57,7 +57,7 @@ require("lazy").setup({
 						"--hidden",
 						"--no-ignore-vcs",
 						"--glob",
-						"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*}",
+						"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/external/*}",
 					},
 				},
 				pickers = {
@@ -70,7 +70,7 @@ require("lazy").setup({
 							"--files",
 							"--no-ignore-vcs",
 							"--glob",
-							"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*}",
+							"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/external/*}",
 						},
 					},
 				},
