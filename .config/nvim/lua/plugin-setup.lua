@@ -199,10 +199,4 @@ require("lazy").setup({
 			})
 		end,
 	},
-
-	-- Fun
-	{
-		"eandrju/cellular-automaton.nvim",
-		cmd = "CellularAutomaton",
-	},
 })

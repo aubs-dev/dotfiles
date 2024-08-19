@@ -137,9 +137,6 @@ keymap.set("n", "<leader>ds", ":Telescope treesitter theme=dropdown<CR>", opts) 
 
 keymap.set("n", "<leader>fb",":lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ind [B]uffer
 
--- Fun
-keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", opts)
-
 -- -------------------------------------------
 -- Management Keybinds
 -- -------------------------------------------
@@ -291,5 +288,5 @@ keymap.set("n", "<leader>3", ":lua OpenAndChangeCWD('C:/Dev/projects/old/engine-
 -- Reload config
 keymap.set("n", "<leader><A-r>", ":source C:/Dev/dotfiles/.config/nvim/init.lua<CR>")
 
--- Complex plugin configs
+-- Plugin specific configs
 require("sanyok.nvimcmp")
