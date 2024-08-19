@@ -28,6 +28,7 @@ opt.backspace = "indent,eol,start"
 opt.cursorline = true
 opt.scrolloff = 4
 opt.updatetime = 100
+opt.mousemodel = extend
 
 -- Cmd & Search
 opt.showcmd = true
@@ -61,21 +62,44 @@ vim.g.maplocalleader = " "
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
--- Toggle line numbers
-function ToggleLineNumbers()
-	-- Run the command in each buffer
-	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-		vim.api.nvim_buf_call(bufnr, function()
-			if vim.o.number then
-				vim.o.number = false
-			else
-				vim.o.number = true
-			end
-		end)
-	end
+function ToggleLineNumbers(isRelative)
+    local state = vim.o.number
+    if isRelative == true then
+        state = vim.o.relativenumber
+    end
+
+    -- Set option for all current windows
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if isRelative == true then
+            vim.api.nvim_win_set_option(win, "relativenumber", not state)
+        else
+            vim.api.nvim_win_set_option(win, "number", not state)
+        end
+    end
+
+    -- Set option for all future windows
+    if isRelative == true then
+        vim.o.relativenumber = not state
+    else
+        vim.o.number = not state
+    end
 end
 
-keymap.set("n", "<leader>ln", ":lua ToggleLineNumbers()<CR>", opts)
+function ToggleLineWrap()
+    local state = vim.o.wrap
+
+    -- Set option for all current windows
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        vim.api.nvim_win_set_option(win, "wrap", not state)
+    end
+
+    -- Set option for all future windows
+    vim.o.wrap = not state
+end
+
+-- Toggle line number state
+keymap.set("n", "<leader>ln", ":lua ToggleLineNumbers(false)<CR>", opts)
+keymap.set("n", "<leader>rn", ":lua ToggleLineNumbers(true)<CR>", opts)
 
 -- Leave terminal mode by hitting esc
 keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
@@ -88,7 +112,7 @@ keymap.set("n", "<A-Down>", ":move +1<cr>", opts)
 keymap.set("n", "<Esc>", ":nohl<CR>:echo ''<CR>", opts)
 
 -- Toggle word wrapping
-keymap.set("n", "<leader>wr", ":set wrap!<CR>", opts)
+keymap.set("n", "<leader>wr", ":lua ToggleLineWrap()<CR>", opts)
 
 -- Window splits (vertical, horizontal & make equal)
 keymap.set("n", "<leader>sv", "<C-w>v", opts)
@@ -107,8 +131,8 @@ keymap.set("n", "<leader>tn", ":tabn<CR>", opts)
 keymap.set("n", "<leader>tp", ":tabp<CR>", opts)
 
 -- Saving and quitting
-keymap.set("n", "<C-s>", ":wa<CR>", opts)
-keymap.set("i", "<C-s>", "<Esc>:wa<CR>", opts)
+keymap.set("n", "<C-s>", ":echo ''<CR>:wa<CR>", opts)
+keymap.set("i", "<C-s>", "<Esc>:echo ''<CR>:wa<CR>", opts)
 
 -- -------------------------------------------
 -- Plugin Keybinds
