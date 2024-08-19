@@ -174,7 +174,7 @@ function TaskRunner()
 	local tasksFilePath = path .. "/tasks.json"
 
 	if not vim.loop.fs_stat(tasksFilePath) then
-		print("Task runner: File 'tasks.json' not found in '" .. path .. "'")
+		print("Task Runner: File 'tasks.json' not found in '" .. path .. "'")
 		return
 	end
 
@@ -182,7 +182,7 @@ function TaskRunner()
 	local scriptFilePath = path .. "/build.bat"
 
 	if not vim.loop.fs_stat(scriptFilePath) then
-		print("Task runner: File 'build.bat' not found in '" .. path .. "'")
+		print("Task Runner: File 'build.bat' not found in '" .. path .. "'")
 		return
 	end
 
@@ -200,18 +200,18 @@ function TaskRunner()
 			for index, task in ipairs(jsonData.tasks) do
 				-- Task sanity checks
 				if task.name == nil then
-					print("Task runner: Key 'name' in task [id: " .. index .. "] not found!")
+					print("Task Runner: Key 'name' in task [id: " .. index .. "] not found!")
 					return
 				elseif task.name == "" then
-					print("Task runner: Key 'name' in task [id: " .. index .. "] has no value!")
+					print("Task Runner: Key 'name' in task [id: " .. index .. "] has no value!")
 					return
 				end
 
 				if task.target == nil then
-					print("Task runner: Key 'target' in task [id: " .. index .. "] not found!")
+					print("Task Runner: Key 'target' in task [id: " .. index .. "] not found!")
 					return
 				elseif task.target == "" then
-					print("Task runner: Key 'target' in task [id: " .. index .. "] has no value!")
+					print("Task Runner: Key 'target' in task [id: " .. index .. "] has no value!")
 					return
 				end
 
@@ -235,11 +235,11 @@ function TaskRunner()
 				table.insert(linesData, Menu.item(" " .. index .. ". " .. task.name, item))
 			end
 		else
-			print("Task runner: No tasks found!")
+			print("Task Runner: No tasks found!")
 			return
 		end
 	else
-		print("Task runner: List 'tasks' is empty!")
+		print("Task Runner: List 'tasks' is empty!")
 		return
 	end
 
@@ -270,20 +270,60 @@ function TaskRunner()
 			submit = { "<CR>", "<Space>" },
 		},
 		on_close = function()
-			print("Task runner: Cancelled!")
+			print("Task Runner: Cancelled!")
 		end,
 		on_submit = function(item)
-			print("Task runner: Executed task '" .. item.name .. "'")
-
+            -- TODO: Clean this up
+			print("Task Runner: Executed task '" .. item.name .. "'")
+            
 			local cmd = "build.bat " .. item.target
 			local args = (item.args ~= "" and (" " .. item.args) or "")
 
 			if item.useTerminal == true then
-				vim.fn.execute("split | terminal " .. cmd .. args)
+                local foundTerminal = false
+                local foundID = 0
+
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                    if vim.b[buf].taskRunnerConsole then
+                        foundTerminal = true
+                        foundID = buf
+                        break
+                    end
+                end
+
+                local createTerminal = false
+                if foundTerminal == true then
+                    local lineCount = vim.api.nvim_buf_line_count(foundID)
+                    local startLine = math.max(lineCount - 50, 0) -- Check the last X amount of lines
+
+                    local lines = vim.api.nvim_buf_get_lines(foundID, startLine, lineCount, false)
+                    
+                    local processExited = false
+                    for _, line in ipairs(lines) do
+                        if line:match("%[Process exited") then
+                            vim.api.nvim_buf_delete(foundID, { force = true })
+                            createTerminal = true
+                            processExited = true
+                            break
+                        end
+                    end
+
+                    if processExited == false then
+                        print("Task Runner: Could not run task '" .. item.name .. "': a process is still running!")
+                    end
+                else
+                    createTerminal = true
+                end
+    
+                if createTerminal == true then
+                    vim.cmd("split | terminal " .. cmd .. args)
+                    vim.api.nvim_buf_set_var(0, "taskRunnerConsole", true)
+                    vim.cmd("normal! G")
+                end
 			else
 				vim.fn.system(cmd .. args)
 				if vim.v.shell_error ~= 0 then
-					print("Task runner: Failed to execute task '" .. item.name .. "'")
+					print("Task runner: Could not run task '" .. item.name .. "': command '" .. cmd .. args .. "' failed not execute!")
 				end
 			end
 		end,
@@ -292,13 +332,21 @@ function TaskRunner()
 	menu:mount()
 end
 
+function CloseTerminal()
+    if vim.bo.buftype == "terminal" then
+        vim.cmd("startinsert")
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, true, true), "n", false)
+    end
+end
+
 keymap.set("n", "<leader>tr", ":lua TaskRunner()<CR>", opts)
+keymap.set("n", "<CR>", ":lua CloseTerminal()<CR>", opts)
 
 -- Open projects
 function OpenAndChangeCWD(path)
 	-- Open file exporer
 	local cmd = string.format(":Oil %s", path)
-	vim.fn.execute(cmd)
+	vim.cmd(cmd)
 
 	-- Change the current working directory
 	vim.api.nvim_set_current_dir(path)
