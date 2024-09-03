@@ -131,8 +131,14 @@ keymap.set("n", "<leader>tn", ":tabn<CR>", opts)
 keymap.set("n", "<leader>tp", ":tabp<CR>", opts)
 
 -- Saving and quitting
-keymap.set("n", "<C-s>", ":echo ''<CR>:wa<CR>", opts)
-keymap.set("i", "<C-s>", "<Esc>:echo ''<CR>:wa<CR>", opts)
+function SaveAllFiles()
+    vim.cmd("silent! wa")
+    local curTime = os.date("%H:%M:%S")
+    print("Files Saved - " .. curTime)
+end
+
+keymap.set("n", "<C-s>", ":lua SaveAllFiles()<CR>", opts)
+keymap.set("i", "<C-s>", "<Esc>:lua SaveAllFiles()<CR>", opts)
 
 -- -------------------------------------------
 -- Plugin Keybinds
