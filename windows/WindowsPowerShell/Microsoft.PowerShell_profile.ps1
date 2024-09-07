@@ -19,6 +19,10 @@ del alias:ls -Force
 Function ExecGitLs { & "C:\Program Files\Git\usr\bin\ls.exe" --color=auto -hF $args }
 Set-Alias -Name ls -Value ExecGitLs
 
+# GDB
+Function ExecGDB { & "C:\mingw64\bin\gdb.exe" --quiet $args }
+Set-Alias -Name gdb -Value ExecGDB
+
 # Run bash scripts
 # Set-Alias sh "C:\Program Files\Git\bin\sh.exe"
 
