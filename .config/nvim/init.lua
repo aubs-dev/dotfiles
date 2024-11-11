@@ -26,7 +26,8 @@ opt.backspace = "indent,eol,start"
 
 -- Cursor
 opt.cursorline = true
-opt.scrolloff = 4
+opt.scrolloff = 0
+-- opt.scrolloff = 4
 opt.updatetime = 100
 opt.mousemodel = extend
 
@@ -36,7 +37,7 @@ opt.ignorecase = true
 opt.smartcase = true
 
 -- Text & Clipboard
-opt.iskeyword:append("-") -- Consider dash as part of a word
+-- opt.iskeyword:append("-") -- Consider dash as part of a word
 opt.clipboard:append("unnamedplus") -- Use system clipboard
 
 -- Window management
