@@ -148,11 +148,19 @@ require("lazy").setup({
 					"bash",
 					"gitignore",
 					"json",
+                    "glsl",
 				},
 				auto_install = true,
 				highlight = { enable = true },
 				indent = { enable = true },
 			})
+
+            vim.filetype.add({
+                extension = {
+                    vert = "glsl",
+                    frag = "glsl",
+                },
+            })
 		end,
 	},
 
