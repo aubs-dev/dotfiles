@@ -56,7 +56,7 @@ require("lazy").setup({
 						"--hidden",
 						"--no-ignore-vcs",
 						"--glob",
-						"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/assets/*,**/external/*}",
+						"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/external/*,**/assets/font,**/assets/music,**/assets/sound,**/assets/sprite}",
 					},
 				},
 				pickers = {
@@ -69,7 +69,7 @@ require("lazy").setup({
 							"--files",
 							"--no-ignore-vcs",
 							"--glob",
-							"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/assets/*}",
+							"!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/assets/font,**/assets/music,**/assets/sound,**/assets/sprite}",
 						},
 					},
 				},
