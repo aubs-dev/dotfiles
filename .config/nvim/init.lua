@@ -172,182 +172,151 @@ keymap.set("n", "<leader>fb",":lua require('telescope.builtin').buffers(require(
 -- Management Keybinds
 -- -------------------------------------------
 
--- Build tasks (needs tasks.json at project root)
-function TaskRunner()
-	local Menu = require("nui.menu")
+function TerminalRunCommand(cmd)
+    -- Run the build script
+    print("CMD: executing command...")
 
-	-- Check if the tasks file exists
-	local path = vim.fn.getcwd():gsub("\\", "/")
-	local tasksFilePath = path .. "/tasks.json"
+    -- Find terminal to hook onto
+    local foundTerminal = false
+    local terminalID = 0
 
-	if not vim.loop.fs_stat(tasksFilePath) then
-		print("Task Runner: File 'tasks.json' not found in '" .. path .. "'")
-		return
-	end
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.b[buf].taskRunnerConsole then
+            foundTerminal = true
+            terminalID = buf
+            break
+        end
+    end
 
-	-- Check if the build script exists
-	local scriptFilePath = path .. "/build.bat"
+    local createTerminal = false
+    if foundTerminal == true then
+        -- Check if the terminal child process is still running
+        local lineCount = vim.api.nvim_buf_line_count(terminalID)
+        local startLine = math.max(lineCount - 50, 0) -- Check the last X amount of lines
 
-	if not vim.loop.fs_stat(scriptFilePath) then
-		print("Task Runner: File 'build.bat' not found in '" .. path .. "'")
-		return
-	end
+        local lines = vim.api.nvim_buf_get_lines(terminalID, startLine, lineCount, false)
 
-	-- Read the contents of tasks.json
-	local contents = vim.fn.readfile(tasksFilePath)
+        local processExited = false
+        for _, line in ipairs(lines) do
+            if line:match("%[Process exited") then
+                -- If the process is no longer running, use the current terminal
+                vim.api.nvim_buf_delete(terminalID, { force = true })
+                createTerminal = true
+                processExited = true
+                break
+            end
+        end
 
-	-- Decode the JSON string
-	local jsonData = vim.fn.json_decode(table.concat(contents, "\n"))
+        -- ELSE: If the process is still running, stop the current build command
+        if processExited == false then
+            print("Build: failed to execute. A process is still running!")
+        end
+    else
+        createTerminal = true
+    end
 
-	-- Prepare list data based on specs provided by tasks.json
-	local linesData = {}
-
-	if jsonData.tasks ~= nil then
-		if #jsonData.tasks > 0 then
-			for index, task in ipairs(jsonData.tasks) do
-				-- Task sanity checks
-				if task.name == nil then
-					print("Task Runner: Key 'name' in task [id: " .. index .. "] not found!")
-					return
-				elseif task.name == "" then
-					print("Task Runner: Key 'name' in task [id: " .. index .. "] has no value!")
-					return
-				end
-
-				if task.target == nil then
-					print("Task Runner: Key 'target' in task [id: " .. index .. "] not found!")
-					return
-				elseif task.target == "" then
-					print("Task Runner: Key 'target' in task [id: " .. index .. "] has no value!")
-					return
-				end
-
-				-- Prepare data
-				local item = {
-					name = task.name,
-
-					target = task.target,
-					args = "",
-					useTerminal = false,
-				}
-
-				if task.args ~= nil then
-					item.args = task.args
-				end
-
-				if task.useTerminal ~= nil then
-					item.useTerminal = task.useTerminal
-				end
-
-				table.insert(linesData, Menu.item(" " .. index .. ". " .. task.name, item))
-			end
-		else
-			print("Task Runner: No tasks found!")
-			return
-		end
-	else
-		print("Task Runner: List 'tasks' is empty!")
-		return
-	end
-
-	-- Mount the UI
-	local menu = Menu({
-		position = "50%",
-		size = {
-			width = 25,
-			height = #jsonData.tasks,
-		},
-		border = {
-			style = "single",
-			text = {
-				top = "[Task-Runner]",
-				top_align = "center",
-			},
-		},
-		win_options = {
-			winhighlight = "Normal:Normal,FloatBorder:Normal",
-		},
-	}, {
-		lines = linesData,
-		max_width = 20,
-		keymap = {
-			focus_next = { "j", "<Down>", "<Tab>" },
-			focus_prev = { "k", "<Up>", "<S-Tab>" },
-			close = { "<Esc>", "<C-c>" },
-			submit = { "<CR>", "<Space>" },
-		},
-		on_close = function()
-			print("Task Runner: Cancelled!")
-		end,
-		on_submit = function(item)
-            -- TODO: Clean this up
-			print("Task Runner: Executed task '" .. item.name .. "'")
-            
-			local cmd = "build.bat " .. item.target
-			local args = (item.args ~= "" and (" " .. item.args) or "")
-
-			if item.useTerminal == true then
-                local foundTerminal = false
-                local foundID = 0
-
-                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                    if vim.b[buf].taskRunnerConsole then
-                        foundTerminal = true
-                        foundID = buf
-                        break
-                    end
-                end
-
-                local createTerminal = false
-                if foundTerminal == true then
-                    local lineCount = vim.api.nvim_buf_line_count(foundID)
-                    local startLine = math.max(lineCount - 50, 0) -- Check the last X amount of lines
-
-                    local lines = vim.api.nvim_buf_get_lines(foundID, startLine, lineCount, false)
-                    
-                    local processExited = false
-                    for _, line in ipairs(lines) do
-                        if line:match("%[Process exited") then
-                            vim.api.nvim_buf_delete(foundID, { force = true })
-                            createTerminal = true
-                            processExited = true
-                            break
-                        end
-                    end
-
-                    if processExited == false then
-                        print("Task Runner: Could not run task '" .. item.name .. "': a process is still running!")
-                    end
-                else
-                    createTerminal = true
-                end
-    
-                if createTerminal == true then
-                    vim.cmd("split | terminal " .. cmd .. args)
-                    vim.api.nvim_buf_set_var(0, "taskRunnerConsole", true)
-                    vim.cmd("normal! G")
-                end
-			else
-				vim.fn.system(cmd .. args)
-				if vim.v.shell_error ~= 0 then
-					print("Task runner: Could not run task '" .. item.name .. "': command '" .. cmd .. args .. "' failed not execute!")
-				end
-			end
-		end,
-	})
-
-	menu:mount()
+    -- If no terminal exists, create one and run the build command
+    if createTerminal == true then
+        vim.cmd("split | terminal " .. cmd)
+        vim.api.nvim_buf_set_var(0, "taskRunnerConsole", true)
+        -- vim.cmd("normal! G")
+    end
 end
 
-function CloseTerminal()
+function TerminalClose()
     if vim.bo.buftype == "terminal" then
         vim.cmd("startinsert")
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, true, true), "n", false)
     end
 end
 
+function CreateChoiceMenu(title, choices, submissionFunc)
+    -- Argument checks
+    if title == nil or title == "" then
+        print("Failed to create choice menu, title is empty!")
+    end
+
+    if submissionFunc == nil then
+        print("Failed to create choice menu, no submission function provided!")
+    end
+
+    if type(choices) == "table" and next(choices) ~= nil then
+        local Menu = require("nui.menu")
+
+        -- Prepare menu data
+        local menuData = {}
+        for index, choice in ipairs(choices) do
+            local item = { task = choice }
+            table.insert(menuData, Menu.item(" " .. (index - 1) .. ". " .. choice, item))  
+        end
+
+        -- Create menu instance
+        local menuInstance = Menu({
+            position = "50%",
+            size = {
+                width = 25,
+                height = #menuData,
+            },
+            border = {
+                style = "single",
+                text = {
+                    top = "[" .. title .. "]",
+                    top_align = "center",
+                },
+            },
+            win_options = {
+                winhighlight = "Normal:Normal,FloatBorder:Normal",
+            },
+            }, {
+                lines = menuData,
+                max_width = 20,
+                keymap = {
+                    focus_next = { "j", "<Down>", "<Tab>" },
+                    focus_prev = { "k", "<Up>", "<S-Tab>" },
+                    close = { "<Esc>", "<C-c>" },
+                    submit = { "<CR>", "<Space>" },
+                },
+                on_close = function()
+                    print("MENU: No choices selected!")
+                end,
+                on_submit = submissionFunc,
+        })
+
+        return menuInstance
+    else
+        print("Failed to create choice menu, choices is empty!")
+        return nil
+    end
+end
+
+function TaskRunner()
+    local basePath = vim.fn.getcwd():gsub("\\", "/")
+    local buildPath = basePath .. "/build.bat"
+
+    -- Check if the build script exists
+	if not vim.loop.fs_stat(buildPath) then
+		print("TaskRunner: File 'build.bat' not found in '" .. basePath .. "'")
+		return
+	end
+    
+    -- Create target selection menu
+    local menu = CreateChoiceMenu(
+        "Task-Runner", 
+        { "build", "asset", "cmake debug", "cmake release", "clean" }, 
+        function(item)
+            print("Task Runner: executed task '" .. item.task .. "'!")
+            local cmd = buildPath .. " " .. item.task
+            TerminalRunCommand(cmd)
+        end
+    )
+
+    if menu ~= nil then
+        menu:mount()
+    end
+end
+
 keymap.set("n", "<leader>tr", ":lua TaskRunner()<CR>", opts)
-keymap.set("n", "<CR>", ":lua CloseTerminal()<CR>", opts)
+keymap.set("n", "<CR>", ":lua TerminalClose()<CR>", opts)
 
 -- Open projects
 function OpenAndChangeCWD(path)
