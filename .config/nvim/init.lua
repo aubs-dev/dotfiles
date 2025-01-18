@@ -158,7 +158,7 @@ end
 keymap.set("n", "<leader>fv", ":lua vim.cmd('Oil ' .. GetBufferDir())<CR>", opts) -- [F]ile [V]iew
 
 -- Telescope
-keymap.set("n", "<leader>kb", ":Telescope keymaps<CR>", opts) -- [K]ey [B]indings
+keymap.set("n", "<leader>km", ":Telescope keymaps<CR>", opts) -- [K]ey [M]appings
 keymap.set("n", "<leader>ch", ":Telescope command_history<CR>", opts) -- [C]ommand [H]istory
 
 keymap.set("n", "<leader><space>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ile [F]inder
