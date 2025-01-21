@@ -172,10 +172,7 @@ keymap.set("n", "<leader>fb",":lua require('telescope.builtin').buffers(require(
 -- Management Keybinds
 -- -------------------------------------------
 
-function TerminalRunCommand(cmd)
-    -- Run the build script
-    print("CMD: executing command...")
-
+function TerminalRunCommand(cmd, doScroll)
     -- Find terminal to hook onto
     local foundTerminal = false
     local terminalID = 0
@@ -219,7 +216,9 @@ function TerminalRunCommand(cmd)
     if createTerminal == true then
         vim.cmd("split | terminal " .. cmd)
         vim.api.nvim_buf_set_var(0, "taskRunnerConsole", true)
-        -- vim.cmd("normal! G")
+        if doScroll then
+            vim.cmd("normal! G")
+        end
     end
 end
 
@@ -302,11 +301,12 @@ function TaskRunner()
     -- Create target selection menu
     local menu = CreateChoiceMenu(
         "Task-Runner", 
-        { "build", "asset", "cmake debug", "cmake release", "clean" }, 
+        { "run debug", "run release", "asset", "clean" }, 
         function(item)
             print("Task Runner: executed task '" .. item.task .. "'!")
             local cmd = buildPath .. " " .. item.task
-            TerminalRunCommand(cmd)
+            local doScroll = (item.task ~= "run debug" and item.task ~= "run release")
+            TerminalRunCommand(cmd, doScroll)
         end
     )
 
