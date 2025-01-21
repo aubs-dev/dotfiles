@@ -1,9 +1,11 @@
+require("luasnip.loaders.from_snipmate").lazy_load()
+
 local cmp = require("cmp")
 cmp.setup({
     -- Snippet engine
     snippet = {
         expand = function(args)
-            vim.snippet.expand(args.body)
+            require("luasnip").lsp_expand(args.body)
         end,
     },
     mapping = {
@@ -16,6 +18,8 @@ cmp.setup({
         ["<C-e>"] = cmp.mapping({ i = cmp.mapping.abort(), c = cmp.mapping.close() }),
     },
     sources = cmp.config.sources({
+        { name = "nvim_lsp" }, -- lsp
+        { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
     }),
@@ -30,7 +34,7 @@ cmp.setup.cmdline("/", {
 cmp.setup.cmdline(":", {
     sources = cmp.config.sources({
         { name = "path" },
-        }, {
-            { name = "cmdline" },
+    }, {
+        { name = "cmdline" },
     }),
 })

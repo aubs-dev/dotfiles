@@ -88,13 +88,12 @@ require("lazy").setup({
                 options = {
                     icons_enabled = true,
                     theme = "gruvbox",
-                    -- theme = "onenord",
                     component_separators = { left = "", right = "" },
                     section_separators = { left = "", right = "" },
                 },
                 sections = {
                     lualine_a = { "mode" },
-                    lualine_b = { "branch", "diff" },
+                    lualine_b = { "branch", "diff", "diagnostics" },
                     lualine_c = { 
                         { 
                             "filename",
@@ -174,14 +173,59 @@ require("lazy").setup({
         end,
     },
 
+    -- Managing & installing lsp servers, linters & formatters
+    {
+        "williamboman/mason.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        build = ":MasonUpdate",
+        config = function()
+            require("mason").setup()
+        end,
+    },
+    {
+        "williamboman/mason-lspconfig.nvim",
+        config = function()
+            require("mason-lspconfig").setup({
+                ensure_installed = {
+                    -- "lua_ls", -- Manual install!
+                    -- "clangd", -- Manual install!
+                    "cmake",
+                    "ols",
+                    "pylsp",
+                },
+            })
+        end,
+    },
+    -- Configuring LSP servers
+    {
+        "neovim/nvim-lspconfig",
+        event = { "BufReadPre", "BufNewFile" },
+    },
+    {
+        "ray-x/lsp_signature.nvim",
+        event = "LspAttach",
+        config = function()
+            require("lsp_signature").setup({
+                bind = true,
+                floating_window = false,
+                hint_prefix = "",
+            })
+        end,
+    },
+
     -- Autocompletion
     {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
         dependencies = {
+            "hrsh7th/cmp-nvim-lsp", -- lsp capabilities
             "hrsh7th/cmp-buffer", -- source for text in buffer
             "hrsh7th/cmp-path", -- source for file system paths
             "hrsh7th/cmp-cmdline", -- source for vim cmd
+
+            -- Snippets
+            { "L3MON4D3/LuaSnip", version = "2.3.0" }, -- snippet engine
+            "saadparwaiz1/cmp_luasnip", -- source for autocomplete
         },
     },
 

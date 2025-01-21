@@ -165,9 +165,13 @@ keymap.set("n", "<leader>ch", ":Telescope command_history<CR>", opts) -- [C]omma
 keymap.set("n", "<leader><space>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ile [F]inder
 keymap.set("n", "<leader>fs", ":Telescope live_grep<CR>", opts) -- [F]ile [S]tring
 keymap.set("n", "<leader>fw", ":Telescope grep_string<CR>", opts) -- [F]ind [W]ord "under cursor"
-keymap.set("n", "<leader>ds", ":Telescope treesitter theme=dropdown<CR>", opts) -- [D]ocument [S]ymbols
 
-keymap.set("n", "<leader>fb",":lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ind [B]uffer
+keymap.set("n", "<leader>fb", ":lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ind [B]uffer
+
+keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown{layout_config = {width = 0.9}})<CR>", opts) -- [F]ind [D]iagnostics
+keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences
+keymap.set("n", "<leader>gd", ":Telescope lsp_definitions<CR>", opts) -- [G]oto [D]efinition
+keymap.set("n", "<leader>ds", ":Telescope lsp_document_symbols theme=dropdown<CR>", opts) -- [D]ocument [S]ymbols
 
 -- -------------------------------------------
 -- Management Keybinds
@@ -345,4 +349,5 @@ keymap.set("n", "<leader>3", ":lua OpenAndChangeCWD('C:/Dev/projects/c-cpp/game-
 keymap.set("n", "<leader><A-r>", ":source C:/Dev/dotfiles/.config/nvim/init.lua<CR>")
 
 -- Plugin specific configs
+require("sanyok.lspconfig")
 require("sanyok.nvimcmp")
