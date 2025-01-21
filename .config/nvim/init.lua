@@ -151,8 +151,8 @@ keymap.set("n", "<leader>lu", ":Lazy update<CR>", opts)
 
 -- Oil file exporer
 function GetBufferDir()
-	local buffer_name = vim.fn.expand("%:p:h")
-	return vim.fn.fnameescape(buffer_name)
+    local buffer_name = vim.fn.expand("%:p:h")
+    return vim.fn.fnameescape(buffer_name)
 end
 
 keymap.set("n", "<leader>fv", ":lua vim.cmd('Oil ' .. GetBufferDir())<CR>", opts) -- [F]ile [V]iew
@@ -273,7 +273,7 @@ function CreateChoiceMenu(title, choices, submissionFunc)
             win_options = {
                 winhighlight = "Normal:Normal,FloatBorder:Normal",
             },
-            }, {
+        }, {
                 lines = menuData,
                 max_width = 20,
                 keymap = {
@@ -286,7 +286,7 @@ function CreateChoiceMenu(title, choices, submissionFunc)
                     print("MENU: No choices selected!")
                 end,
                 on_submit = submissionFunc,
-        })
+            })
 
         return menuInstance
     else
@@ -300,11 +300,11 @@ function TaskRunner()
     local buildPath = basePath .. "/build.bat"
 
     -- Check if the build script exists
-	if not vim.loop.fs_stat(buildPath) then
-		print("TaskRunner: File 'build.bat' not found in '" .. basePath .. "'")
-		return
-	end
-    
+    if not vim.loop.fs_stat(buildPath) then
+        print("TaskRunner: File 'build.bat' not found in '" .. basePath .. "'")
+        return
+    end
+
     -- Create target selection menu
     local menu = CreateChoiceMenu(
         "Task-Runner", 
@@ -327,13 +327,13 @@ keymap.set("n", "<CR>", ":lua TerminalClose()<CR>", opts)
 
 -- Open projects
 function OpenAndChangeCWD(path)
-	-- Open file exporer
-	local cmd = string.format(":Oil %s", path)
-	vim.cmd(cmd)
+    -- Open file exporer
+    local cmd = string.format(":Oil %s", path)
+    vim.cmd(cmd)
 
-	-- Change the current working directory
-	vim.api.nvim_set_current_dir(path)
-	print(path)
+    -- Change the current working directory
+    vim.api.nvim_set_current_dir(path)
+    print(path)
 end
 
 keymap.set("n", "<leader>1", ":lua OpenAndChangeCWD('C:/Dev/dotfiles/.config/nvim')<CR>", opts)
