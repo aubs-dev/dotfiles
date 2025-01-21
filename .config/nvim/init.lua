@@ -229,6 +229,12 @@ function TerminalClose()
     end
 end
 
+function CapitalizeWords(str)
+    return str:gsub("(%a)(%a*)", function(first, rest)
+        return first:upper() .. rest:lower()
+    end)
+end
+
 function CreateChoiceMenu(title, choices, submissionFunc)
     -- Argument checks
     if title == nil or title == "" then
@@ -246,7 +252,8 @@ function CreateChoiceMenu(title, choices, submissionFunc)
         local menuData = {}
         for index, choice in ipairs(choices) do
             local item = { task = choice }
-            table.insert(menuData, Menu.item(" " .. (index - 1) .. ". " .. choice, item))  
+
+            table.insert(menuData, Menu.item(" " .. (index - 1) .. ". " .. CapitalizeWords(choice), item))  
         end
 
         -- Create menu instance
