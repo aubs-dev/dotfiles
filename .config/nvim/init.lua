@@ -258,7 +258,7 @@ function CreateChoiceMenu(title, choices, submissionFunc)
         for index, choice in ipairs(choices) do
             local item = { task = choice }
 
-            table.insert(menuData, Menu.item(" " .. (index - 1) .. ". " .. CapitalizeWords(choice), item))
+            table.insert(menuData, Menu.item(" " .. index .. ". " .. CapitalizeWords(choice), item))
         end
 
         -- Create menu instance
@@ -313,7 +313,7 @@ function TaskRunner()
     -- Create target selection menu
     local menu = CreateChoiceMenu(
         "Task-Runner",
-        { "run debug", "run release", "asset", "clean" },
+        { "game debug", "game release", "asset", "clean" },
         function(item)
             print("Task Runner: executed task '" .. item.task .. "'!")
             local cmd = buildPath .. " " .. item.task
