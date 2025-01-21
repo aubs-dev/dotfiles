@@ -8,6 +8,7 @@ local opt = vim.opt
 -- Line numbers
 opt.number = true
 opt.relativenumber = false
+opt.signcolumn = "yes"
 
 -- Indentation & wrapping
 opt.tabstop = 4
@@ -29,7 +30,7 @@ opt.cursorline = true
 opt.scrolloff = 0
 -- opt.scrolloff = 4
 opt.updatetime = 100
-opt.mousemodel = extend
+opt.mousemodel = "extend"
 
 -- Cmd & Search
 opt.showcmd = true
@@ -253,7 +254,7 @@ function CreateChoiceMenu(title, choices, submissionFunc)
         for index, choice in ipairs(choices) do
             local item = { task = choice }
 
-            table.insert(menuData, Menu.item(" " .. (index - 1) .. ". " .. CapitalizeWords(choice), item))  
+            table.insert(menuData, Menu.item(" " .. (index - 1) .. ". " .. CapitalizeWords(choice), item))
         end
 
         -- Create menu instance
@@ -307,8 +308,8 @@ function TaskRunner()
 
     -- Create target selection menu
     local menu = CreateChoiceMenu(
-        "Task-Runner", 
-        { "run debug", "run release", "asset", "clean" }, 
+        "Task-Runner",
+        { "run debug", "run release", "asset", "clean" },
         function(item)
             print("Task Runner: executed task '" .. item.task .. "'!")
             local cmd = buildPath .. " " .. item.task
