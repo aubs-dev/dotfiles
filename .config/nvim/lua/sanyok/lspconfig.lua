@@ -27,6 +27,7 @@ lspconfig["lua_ls"].setup({
                     [vim.fn.expand("$VIMRUNTIME/lua")] = true,
                     [vim.fn.stdpath("config") .. "/lua"] = true,
                 },
+                checkThirdParty = "Apply"
             },
         },
     },
