@@ -1,0 +1,3 @@
+ffmpeg -i input.mp4 -filter_complex "[0:v] palettegen" "C:\ffmpeg\palette.png"
+
+ffmpeg -i input.mp4 -i "C:\ffmpeg\palette.png" -filter_complex "[0:v]fps=15,scale=iw:ih:neighbor,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=1:stats_mode=full[p];[s1][p]paletteuse=dither=bayer" -t 00:00:10 output.gif
