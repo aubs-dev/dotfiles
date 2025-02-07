@@ -30,18 +30,23 @@ return
 return
 
 ; --- Focus Runelite
-#Enter:: ; Windows + Enter
+#]:: ; Windows + Enter
     windowTitle := "RuneLite - HistoricClio"
     WinGet, windowState, MinMax, %windowTitle%
 
     if (windowState = -1) {
         ; Restore window if minimized
-        WinActivate, 
+        WinActivate, %windowTitle%
         WinRestore, %windowTitle%
     } else {
-        ; Otherwise, minimize window
-        WinActivate, %windowTitle%
-        WinMinimize, %windowTitle%
+        if WinActive(windowTitle) {
+            ; Minimize if active
+            WinActivate, %windowTitle%
+            WinMinimize, %windowTitle%
+        } else {
+            ; Focus the window if it's inactive
+            WinActivate, %windowTitle%
+        }
     }
 
     ; Center window on screen
