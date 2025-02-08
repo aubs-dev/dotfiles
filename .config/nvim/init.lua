@@ -280,19 +280,19 @@ function CreateChoiceMenu(title, choices, submissionFunc)
                 winhighlight = "Normal:Normal,FloatBorder:Normal",
             },
         }, {
-                lines = menuData,
-                max_width = 20,
-                keymap = {
-                    focus_next = { "j", "<Down>", "<Tab>" },
-                    focus_prev = { "k", "<Up>", "<S-Tab>" },
-                    close = { "<Esc>", "<C-c>" },
-                    submit = { "<CR>", "<Space>" },
-                },
-                on_close = function()
-                    print("MENU: No choices selected!")
-                end,
-                on_submit = submissionFunc,
-            })
+            lines = menuData,
+            max_width = 20,
+            keymap = {
+                focus_next = { "j", "<Down>", "<Tab>" },
+                focus_prev = { "k", "<Up>", "<S-Tab>" },
+                close = { "<Esc>", "<C-c>" },
+                submit = { "<CR>", "<Space>" },
+            },
+            on_close = function()
+                print("MENU: No choices selected!")
+            end,
+            on_submit = submissionFunc,
+        })
 
         return menuInstance
     else
