@@ -54,6 +54,9 @@ vim.g.gruvbox_contrast_dark = "medium"
 vim.g.gruvbox_invert_selection = 0
 vim.cmd([[colorscheme gruvbox]])
 
+-- Filetypes
+vim.g.c_syntax_for_h = 1
+
 -- -------------------------------------------
 -- General Keybinds
 -- -------------------------------------------

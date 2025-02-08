@@ -37,7 +37,8 @@ lspconfig["lua_ls"].setup({
 lspconfig["clangd"].setup({
     capabilities = custom_capabilities,
     on_attach = custom_attach,
-    filetypes = { "c", "cpp" },
+    -- filetypes = { "c", "cpp" },
+    filetypes = { "cpp" },
     cmd = {
         "clangd.exe",
         "--all-scopes-completion",
