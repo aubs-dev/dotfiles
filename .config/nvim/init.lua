@@ -353,5 +353,5 @@ keymap.set("n", "<leader>3", ":lua OpenAndChangeCWD('C:/Dev/projects/c-cpp/cpp-p
 keymap.set("n", "<leader><A-r>", ":source C:/Dev/dotfiles/.config/nvim/init.lua<CR>")
 
 -- Plugin specific configs
-require("sanyok.lspconfig")
-require("sanyok.nvimcmp")
+require("aubs.lspconfig")
+require("aubs.nvimcmp")
