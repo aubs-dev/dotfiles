@@ -270,7 +270,8 @@ require("lazy").setup({
                     tooltip = "Nvim <3",
                 },
                 display = {
-                    theme = "material",
+                    theme = "atom",
+                    flavor = "light",
                     swap_icons = true,
                 },
                 timestamp = {
@@ -299,7 +300,7 @@ require("lazy").setup({
                 },
                 assets = {
                     [".h"] = {
-                        icon = require("cord.api.icon").get("c", "material"),
+                        icon = require("cord.api.icon").get("c", "atom", "light"),
                         tooltip = "C Header",
                         name = "C Header",
                         type = "language",
