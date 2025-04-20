@@ -2,8 +2,8 @@ local wezterm = require("wezterm")
 
 local config = {
     -- Appearance
-    animation_fps = 75,
-    max_fps = 75,
+    animation_fps = 180,
+    max_fps = 180,
 
     cursor_blink_rate = 500,
     default_cursor_style = "BlinkingBar",
