@@ -1,12 +1,13 @@
+-- Leader key
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Bootstrap lazy.nvim
+-- Bootstrap the lazy.nvim package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.uv.fs_stat(lazypath) then
-  local repo = "https://github.com/folke/lazy.nvim.git"
-  vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
+    local repo = "https://github.com/folke/lazy.nvim.git"
+    vim.fn.system({ "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath })
 end
 
 vim.opt.rtp:prepend(lazypath)
@@ -16,6 +17,9 @@ require("lazy").setup({
     spec = {
         { import = "plugins" },
     },
+    rocks = {
+        enabled = false,
+    },
     dev = {
         path = "C:/Dev/projects/lua/nvim-plugins",
     },
@@ -23,15 +27,18 @@ require("lazy").setup({
         enabled = false,
         notify = false,
     },
+    ui = {
+        border = "rounded",
+    },
 })
 
 -- General
 require("options")
+require("filetype")
+require("autocmds")
 
 vim.schedule(function()
-  require("keybinds")
+    require("mappings")
 end)
 
--- Plugin specific
-require("configs.lspconfig")
-require("configs.nvimcmp")
+require("lsp")

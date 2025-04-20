@@ -3,7 +3,7 @@ local opt = vim.opt
 -- Line numbers
 opt.number = true
 opt.relativenumber = false
-opt.signcolumn = "yes"
+opt.signcolumn = "no"
 
 -- Indentation & wrapping
 opt.tabstop = 4

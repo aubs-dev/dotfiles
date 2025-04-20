@@ -28,12 +28,10 @@ function GetBufferDirectory()
     local path = vim.fn.expand("%:p:h")
     return vim.fn.fnameescape(path)
 end
+
 -- -------------------------------------------
 -- Default Keybinds
 -- -------------------------------------------
-
--- Enter command mode
-keymap.set("n", ";", ":", opts)
 
 -- Clear search & highlight
 keymap.set("n", "<Esc>", ":nohl<CR>:echo ''<CR>", opts)
@@ -50,51 +48,56 @@ keymap.set("n", "<C-s>", ":lua SaveAllFiles()<CR>", opts)
 keymap.set("i", "<C-s>", "<Esc>:lua SaveAllFiles()<CR>", opts)
 
 -- Toggling
-keymap.set("n", "<leader>ln", ":lua ToggleOption('number')<CR>", opts)
-keymap.set("n", "<leader>rn", ":lua ToggleOption('relativenumber')<CR>", opts)
-keymap.set("n", "<leader>wr", ":lua ToggleOption('wrap')<CR>", opts)
+keymap.set("n", "<leader>ln", ":lua ToggleOption('number')<CR>", opts) -- [L]ine [N]umber
+keymap.set("n", "<leader>rn", ":lua ToggleOption('relativenumber')<CR>", opts) -- [R]elative [N]umbers
+keymap.set("n", "<leader>wr", ":lua ToggleOption('wrap')<CR>", opts) -- [W][R]ap
 
--- Window splits (vertical, horizontal & make equal)
-keymap.set("n", "<leader>sv", "<C-w>v", opts)
-keymap.set("n", "<leader>sh", "<C-w>s", opts)
-keymap.set("n", "<leader>se", "<C-w>=", opts)
+-- Buffer actions
+keymap.set("n", "<leader>bd", ":bd<CR>", opts) -- [B]uffer [D]elete
+
+-- Window splits & movement
+keymap.set("n", "<leader>sv", "<C-w>v", opts) -- [S]plit [V]ertical
+keymap.set("n", "<leader>sh", "<C-w>s", opts) -- [S]plit [H]orizontal
+keymap.set("n", "<leader>se", "<C-w>=", opts) -- [S]plit [E]qual
 
 keymap.set("n", "<leader>ww", "<C-w>k", opts)
 keymap.set("n", "<leader>ss", "<C-w>j", opts)
 keymap.set("n", "<leader>aa", "<C-w>h", opts)
 keymap.set("n", "<leader>dd", "<C-w>l", opts)
 
--- Window tabs (open, close, move next & move previous)
-keymap.set("n", "<leader>to", ":tabnew<CR>", opts)
-keymap.set("n", "<leader>tc", ":tabclose<CR>", opts)
-keymap.set("n", "<leader>tn", ":tabn<CR>", opts)
-keymap.set("n", "<leader>tp", ":tabp<CR>", opts)
+-- Window tabs
+keymap.set("n", "<leader>to", ":tabnew<CR>", opts)   -- [T]ab [O]pen
+keymap.set("n", "<leader>tc", ":tabclose<CR>", opts) -- [T]ab [C]lose
+keymap.set("n", "<leader>tn", ":tabn<CR>", opts)     -- [T]ab [N]ext
+keymap.set("n", "<leader>tp", ":tabp<CR>", opts)     -- [T]ab [P]revious
 
 -- -------------------------------------------
 -- Plugin Keybinds
 -- -------------------------------------------
 
 -- Lazy package manager
-keymap.set("n", "<leader>ll", ":Lazy<CR>", opts)
-keymap.set("n", "<leader>lu", ":Lazy update<CR>", opts)
+keymap.set("n", "<leader>ll", ":Lazy<CR>", opts) -- [L]azy [L]ist
+keymap.set("n", "<leader>lu", ":Lazy update<CR>", opts) -- [L]azy [U]pdate
 
 -- Oil file exporer
 keymap.set("n", "<leader>fv", ":lua vim.api.nvim_command('Oil ' .. GetBufferDirectory())<CR>", opts) -- [F]ile [V]iew
 
 -- Telescope
-keymap.set("n", "<leader>kb", ":Telescope keymaps<CR>", opts) -- [K]ey [B]indings
+keymap.set("n", "<leader>km", ":Telescope keymaps<CR>", opts) -- [K]ey [M]appings
 keymap.set("n", "<leader>ch", ":Telescope command_history<CR>", opts) -- [C]ommand [H]istory
 
-keymap.set("n", "<leader><space>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ile [F]inder
+keymap.set("n", "<leader><space>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ile [F]inder | Not acurate anymore lol
 keymap.set("n", "<leader>fs", ":Telescope live_grep<CR>", opts) -- [F]ile [S]tring
 keymap.set("n", "<leader>fw", ":Telescope grep_string<CR>", opts) -- [F]ind [W]ord "under cursor"
 
 keymap.set("n", "<leader>fb", ":lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ind [B]uffer
 
 -- Language Server (LSP)
+keymap.set("n", "<leader>ls", ":checkhealth vim.lsp<CR>", opts) -- [L]anguage [S]erver
+
 keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown{layout_config = {width = 0.9}})<CR>", opts) -- [F]ind [D]iagnostics
 keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences
-keymap.set("n", "<leader>gd", ":Telescope lsp_definitions<CR>", opts) -- [G]oto [D]efinition
+keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts) -- [G]oto [D]efinition
 keymap.set("n", "<leader>ds", ":Telescope lsp_document_symbols theme=dropdown<CR>", opts) -- [D]ocument [S]ymbols
 
 -- TEMPORARY
