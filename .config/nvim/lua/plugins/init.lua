@@ -1,46 +1,56 @@
--- Auto-install lazy.nvim if not present
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+return {
+    -- Dependencies
+    { "nvim-tree/nvim-web-devicons" },
+    { "nvim-lua/plenary.nvim", lazy = true },
 
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable",
-        lazypath,
-    })
-end
-
-vim.opt.rtp:prepend(lazypath)
-
--- Plugin setup
-require("lazy").setup({
     -- Colorscheme
-    { "morhetz/gruvbox" },
+    {
+        "ellisonleao/gruvbox.nvim",
+        config = function()
+            -- require("gruvbox").setup({
+            --     invert_selection = true
+            -- })
+            vim.cmd("colorscheme gruvbox")
+        end
+    },
 
     -- File management
     {
         "stevearc/oil.nvim",
         config = function()
             require("oil").setup({
-                -- Restore window options to previous values when leaving an oil buffer
-                restore_win_options = false,
+                keymaps = {
+                    ["<C-s>"] = false,
+                    ["<C-h>"] = false,
+                    ["<C-t>"] = false,
+                    ["<C-p>"] = false,
+                    ["<C-c>"] = false,
+                    ["`"] = false,
+                    ["~"] = false,
+                    ["gs"] = false,
+                    ["gx"] = false,
+                    ["g."] = false,
+                    ["g\\"] = false,
+                },
                 view_options = {
-                    -- Show files and directories that start with "."
                     show_hidden = true,
                 },
+                preview_win = {
+                    disable_preview = function(filename)
+                        return true
+                    end,
+                }
             })
         end,
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
     },
     {
         "nvim-telescope/telescope.nvim",
         tag = "0.1.8",
         cmd = "Telescope",
         config = function()
+            local assets = ",**/assets/font,**/assets/music,**/assets/particle,**/assets/sound,**/assets/sprite,**/assets/tilemap"
+            local excludedDirs = "!{**/.git/*,**/.cache/*,**/bin/*,**/build/*" .. assets
+
             require("telescope").setup({
                 defaults = {
                     hidden = true,
@@ -56,7 +66,7 @@ require("lazy").setup({
                         "--hidden",
                         "--no-ignore-vcs",
                         "--glob",
-                        "!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/external/*,**/assets/font,**/assets/music,**/assets/sound,**/assets/sprite}",
+                        excludedDirs .. ",**/external/*}",
                     },
                 },
                 pickers = {
@@ -69,95 +79,40 @@ require("lazy").setup({
                             "--files",
                             "--no-ignore-vcs",
                             "--glob",
-                            "!{**/.git/*,**/.cache/*,**/bin/*,**/dist/*,**/build/*,**/assets/font,**/assets/music,**/assets/sound,**/assets/sprite}",
+                            excludedDirs .. "}",
                         },
                     },
                 },
             })
         end,
-        dependencies = {
-            { "nvim-lua/plenary.nvim", lazy = true },
-        },
     },
-
-    -- IDE visuals
-    {
-        "nvim-lualine/lualine.nvim",
-        config = function()
-            require("lualine").setup({
-                options = {
-                    icons_enabled = true,
-                    theme = "gruvbox",
-                    component_separators = { left = "", right = "" },
-                    section_separators = { left = "", right = "" },
-                },
-                sections = {
-                    lualine_a = { "mode" },
-                    lualine_b = { "branch", "diff", "diagnostics" },
-                    lualine_c = { 
-                        { 
-                            "filename",
-                            path = 4
-                        }
-                    },
-                    lualine_x = { "filetype" },
-                    lualine_y = { "progress" },
-                    lualine_z = { "location" },
-                },
-                inactive_sections = {
-                    lualine_a = {},
-                    lualine_b = {},
-                    lualine_c = {
-                        {
-                            "filename",
-                            path = 4
-                        }
-                    },
-                    lualine_x = { "location" },
-                    lualine_y = {},
-                    lualine_z = {},
-                },
-            })
-        end,
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-    },
-    {
-        "echasnovski/mini.tabline",
-        version = false,
-        config = function()
-            require("mini.tabline").setup({
-                set_vim_settings = false,
-                tabpage_section = "right",
-            })
-        end,
-    },
-    { "MunifTanjim/nui.nvim" },
 
     -- Treesitter
     {
         "nvim-treesitter/nvim-treesitter",
-        tag = "v0.9.2",
+        tag = "v0.9.3",
         build = ":TSUpdateSync",
         event = "BufReadPre",
         config = function()
             require("nvim-treesitter.configs").setup({
                 ensure_installed = {
                     "lua",
+                    "luadoc",
                     "vim",
                     "vimdoc",
                     "markdown",
                     "markdown_inline",
+                    "gitignore",
+                    "gitattributes",
+                    "json",
+                    "toml",
+                    "bash",
                     "c",
                     "cpp",
-                    "odin",
-                    "cmake",
                     "make",
-                    "bash",
-                    "gitignore",
-                    "json",
+                    "cmake",
                     "glsl",
+                    "odin",
                 },
                 auto_install = true,
                 highlight = { enable = true },
@@ -187,15 +142,16 @@ require("lazy").setup({
         config = function()
             require("mason-lspconfig").setup({
                 ensure_installed = {
-                    -- "lua_ls", -- Manual install!
-                    -- "clangd", -- Manual install!
                     "cmake",
                     "ols",
                     "pylsp",
+                    -- "lua_ls", -- Manual install & add to PATH
+                    -- "clangd", -- Manual install & add to PATH
                 },
             })
         end,
     },
+    -- TODO: CONTINUE FROM HERE
     -- Configuring LSP servers
     {
         "neovim/nvim-lspconfig",
@@ -229,15 +185,58 @@ require("lazy").setup({
         },
     },
 
-    -- Utility
+    -- IDE visuals
     {
-        "numToStr/Comment.nvim",
-        tag = "v0.8.0",
-        event = "BufReadPre",
+        "nvim-lualine/lualine.nvim",
         config = function()
-            require("Comment").setup()
+            require("lualine").setup({
+                options = {
+                    icons_enabled = true,
+                    theme = "gruvbox",
+                    component_separators = { left = "", right = "" },
+                    section_separators = { left = "", right = "" },
+                },
+                sections = {
+                    lualine_a = { "mode" },
+                    lualine_b = { "branch", "diff", "diagnostics" },
+                    lualine_c = {
+                        {
+                            "filename",
+                            path = 4
+                        }
+                    },
+                    lualine_x = { "filetype" },
+                    lualine_y = { "progress" },
+                    lualine_z = { "location" },
+                },
+                inactive_sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {
+                        {
+                            "filename",
+                            path = 4
+                        }
+                    },
+                    lualine_x = { "location" },
+                    lualine_y = {},
+                    lualine_z = {},
+                },
+            })
         end,
     },
+    {
+        "echasnovski/mini.tabline",
+        version = false,
+        config = function()
+            require("mini.tabline").setup({
+                set_vim_settings = false,
+                tabpage_section = "right",
+            })
+        end,
+    },
+
+    -- Utility
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
@@ -321,4 +320,4 @@ require("lazy").setup({
             })
         end
     }
-})
+}
