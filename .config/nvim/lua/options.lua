@@ -1,9 +1,9 @@
 local opt = vim.opt
 
 -- Line numbers
-opt.number = true
+opt.number = false
 opt.relativenumber = false
-opt.signcolumn = "no"
+opt.signcolumn = "yes:1"
 
 -- Indentation & wrapping
 opt.tabstop = 4
@@ -42,7 +42,3 @@ vim.g.c_syntax_for_h = 1
 -- Window management
 opt.splitright = true
 opt.splitbelow = true
-
--- Colors
-opt.background = "dark"
-opt.termguicolors = true

@@ -93,7 +93,7 @@ keymap.set("n", "<leader>fw", ":Telescope grep_string<CR>", opts) -- [F]ind [W]o
 keymap.set("n", "<leader>fb", ":lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ind [B]uffer
 
 -- Language Server (LSP)
-keymap.set("n", "<leader>ls", ":checkhealth vim.lsp<CR>", opts) -- [L]anguage [S]erver
+keymap.set("n", "<leader>lsp", ":checkhealth vim.lsp<CR>", opts) -- [L]anguage [S]erver
 
 keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown{layout_config = {width = 0.9}})<CR>", opts) -- [F]ind [D]iagnostics
 keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences

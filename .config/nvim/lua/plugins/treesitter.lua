@@ -1,7 +1,7 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    tag = "v0.9.3",
-    build = ":TSUpdateSync",
+    -- tag = "v0.9.3",
+    -- build = ":TSUpdateSync",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
         require("nvim-treesitter.configs").setup({
