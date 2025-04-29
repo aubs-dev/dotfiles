@@ -19,7 +19,6 @@ local config = {
     },
 
     color_scheme = "Gruvbox dark, medium (base16)",
-    -- color_scheme = "One Light (Gogh)",
 
     enable_tab_bar = true,
     hide_tab_bar_if_only_one_tab = true,
@@ -43,11 +42,16 @@ local config = {
     scrollback_lines = 4096,
 
     -- Launch
-    default_prog = { "cmd.exe", "/K", "vcvarsall.bat x64 > nul", "&&", "powershell.exe", "-nologo" }
-    -- default_prog = { "powershell.exe", "-nologo" }
+    default_prog = { "cmd.exe", "/K", "vcvarsall.bat x64 > nul", "&&", "powershell.exe", "-nologo" },
+    -- default_prog = { "powershell.exe", "-nologo" },
 
-    -- Key bindings
-    -- TBD
+    colors = {
+        cursor_bg = "#ebdbb2",
+        cursor_fg = "#3c3836",
+        cursor_border = "#ebdbb2",
+        selection_fg = "#ebdbb2",
+        selection_bg = "#3c3836",
+    },
 }
 
 for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
