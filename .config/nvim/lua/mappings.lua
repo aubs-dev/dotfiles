@@ -18,8 +18,8 @@ function ToggleOption(name)
 
     for _, windowId in ipairs(api.nvim_list_wins()) do
         local options = { scope = "local", win = windowId }
-        local state = api.nvim_get_option_value(name, options)
-        api.nvim_set_option_value(name, not state, options)
+        local state = not api.nvim_get_option_value(name, options)
+        api.nvim_set_option_value(name, state, options)
     end
 end
 
@@ -99,18 +99,3 @@ keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(req
 keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences
 keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts) -- [G]oto [D]efinition
 keymap.set("n", "<leader>ds", ":Telescope lsp_document_symbols theme=dropdown<CR>", opts) -- [D]ocument [S]ymbols
-
--- TEMPORARY
-function OpenAndChangeCWD(path)
-    -- Open file exporer
-    local cmd = string.format(":Oil %s", path)
-    api.nvim_command(cmd)
-
-    -- Change the current working directory
-    api.nvim_set_current_dir(path)
-    print(path)
-end
-
-keymap.set("n", "<leader>1", ":lua OpenAndChangeCWD('C:/Dev/dotfiles/.config/nvim')<CR>", opts)
-keymap.set("n", "<leader>2", ":lua OpenAndChangeCWD('C:/Dev/projects/c-cpp/game')<CR>", opts)
-keymap.set("n", "<leader>3", ":lua OpenAndChangeCWD('C:/Dev/projects/c-cpp/cpp-port')<CR>", opts)

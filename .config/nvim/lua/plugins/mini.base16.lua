@@ -111,7 +111,19 @@ return {
         hi("@keyword.return", { fg = gruvbox.red })
 
         -- [indent-blankline]
-        hi("IblIndent", { fg = gruvbox.bg1, bold = true })
+        hi("IblIndent", { fg = gruvbox.bg1 })
+
+        -- [mini.tabline]
+        hi("MiniTablineCurrent",         { fg = gruvbox.bg1, bg = gruvbox.fg1 })
+        hi("MiniTablineVisible",         { fg = gruvbox.fg2, bg = gruvbox.bg1 })
+        hi("MiniTablineHidden",          { fg = gruvbox.bg4, bg = gruvbox.bg0 })
+
+        hi("MiniTablineModifiedCurrent", { fg = gruvbox.bg0, bg = gruvbox.yellow })
+        hi("MiniTablineModifiedVisible", { link = "MiniTablineVisible" })
+        hi("MiniTablineModifiedHidden",  { link = "MiniTablineHidden" })
+        hi("MiniTablineFill",            { bg = gruvbox.bg0 })
+        hi("MiniTablineTabpagesection",  { fg = gruvbox.bg0, bg = gruvbox.purple })
+        hi("MiniTablineTrunc",           { fg = gruvbox.bg0, bg = gruvbox.orange })
 
         -- [mini.trailspace]
         hi("MiniTrailspace", { bg = gruvbox.red })

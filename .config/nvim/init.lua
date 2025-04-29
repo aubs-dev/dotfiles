@@ -21,7 +21,9 @@ require("lazy").setup({
         enabled = false,
     },
     dev = {
-        path = "C:/Dev/projects/lua/nvim-plugins",
+        path = function(plugin)
+            return "C:/Dev/projects/lua/nvim-plugins/" .. plugin.name
+        end,
     },
     change_detection = {
         enabled = false,
