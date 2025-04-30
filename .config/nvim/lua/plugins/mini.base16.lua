@@ -74,6 +74,12 @@ return {
         hi("YankHighlight", { fg = gruvbox.bg0, bg = gruvbox.aqua })
 
         -- [general]
+        hi("MsgArea", { fg = gruvbox.fg1 })
+        hi("ModeMsg", { fg = gruvbox.aqua })
+        hi("MoreMsg", { fg = gruvbox.aqua })
+        hi("WarningMsg", { fg = gruvbox.yellow })
+        hi("ErrorMsg", { fg = gruvbox.red })
+
         hi("LineNr", { fg = gruvbox.bg4, bg = gruvbox.bg0 })
         hi("SignColumn", { bg = gruvbox.bg1 })
         hi("CursorLineSign", { bg = gruvbox.bg4 })
@@ -109,6 +115,8 @@ return {
 
         -- [treesitter]
         hi("@keyword.return", { fg = gruvbox.red })
+        hi("@string.regexp.lua", { fg = gruvbox.orange })
+        hi("@string.escape.lua", { fg = gruvbox.orange })
 
         -- [indent-blankline]
         hi("IblIndent", { fg = gruvbox.bg1 })
@@ -116,12 +124,12 @@ return {
         -- [mini.tabline]
         hi("MiniTablineCurrent",         { fg = gruvbox.bg1, bg = gruvbox.fg1 })
         hi("MiniTablineVisible",         { fg = gruvbox.fg2, bg = gruvbox.bg1 })
-        hi("MiniTablineHidden",          { fg = gruvbox.bg4, bg = gruvbox.bg0 })
+        hi("MiniTablineHidden",          { fg = gruvbox.bg4, bg = gruvbox.bg1 })
 
         hi("MiniTablineModifiedCurrent", { fg = gruvbox.bg0, bg = gruvbox.yellow })
         hi("MiniTablineModifiedVisible", { link = "MiniTablineVisible" })
         hi("MiniTablineModifiedHidden",  { link = "MiniTablineHidden" })
-        hi("MiniTablineFill",            { bg = gruvbox.bg0 })
+        hi("MiniTablineFill",            { bg = gruvbox.bg2 })
         hi("MiniTablineTabpagesection",  { fg = gruvbox.bg0, bg = gruvbox.purple })
         hi("MiniTablineTrunc",           { fg = gruvbox.bg0, bg = gruvbox.orange })
 

@@ -99,3 +99,6 @@ keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(req
 keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences
 keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts) -- [G]oto [D]efinition
 keymap.set("n", "<leader>ds", ":Telescope lsp_document_symbols theme=dropdown<CR>", opts) -- [D]ocument [S]ymbols
+
+-- Hopper
+keymap.set("n", "<leader>1", ":Hopper<CR>", opts)

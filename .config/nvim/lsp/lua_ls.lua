@@ -26,6 +26,8 @@ return {
                 disable = {
                     "missing-parameters",
                     "missing-fields",
+                    "unused-local",
+                    "unused-param",
                 },
             },
             workspace = {

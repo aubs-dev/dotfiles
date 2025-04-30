@@ -1,5 +1,6 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
+local argv = vim.v.argv
 
 local general = augroup("aubs-dev/general", { clear = true })
 
@@ -50,3 +51,32 @@ autocmd("TextYankPost", {
 		vim.highlight.on_yank({ higroup = "YankHighlight", timeout = 200, visual = true })
 	end,
 })
+
+-- Set the current working directory from the arguments used to open NeoVim
+local targetDir
+for i = 2, #argv do -- Skip argv[1]
+    local a = argv[i]
+
+    if not a:match("^%-") then -- Ignore flags
+        -- Strip any trailing slash for consistency
+        local dir = a:gsub("/$", "")
+
+        if vim.fn.isdirectory(dir) ~= 0 then
+            targetDir = dir
+            break
+        end
+    end
+end
+
+if targetDir then
+    -- create (or clear) an augroup called "CdToArg"
+    local grp = vim.api.nvim_create_augroup("CdToArg", { clear = true })  -- :contentReference[oaicite:6]{index=6}
+
+    -- on VimEnter, change working directory
+    autocmd("VimEnter", {
+        group = general,
+        callback = function()
+            vim.api.nvim_set_current_dir(targetDir)
+        end,
+    })
+end
