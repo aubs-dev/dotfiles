@@ -102,3 +102,7 @@ keymap.set("n", "<leader>ds", ":Telescope lsp_document_symbols theme=dropdown<CR
 
 -- Hopper
 keymap.set("n", "<leader>1", ":Hopper<CR>", opts)
+
+-- Task Runner
+keymap.set("n", "<leader>tr", ":lua require('task-runner').choose_task()<CR>", opts)
+keymap.set("n", "<CR>", ":lua require('task-runner').terminal_close()<CR>", opts)
