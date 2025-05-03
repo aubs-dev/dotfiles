@@ -12,17 +12,14 @@ return {
         -- "--log=verbose",
     },
     filetypes = {
-        -- "c",
+        "c",
         "cpp",
     },
     root_markers = {
+        ".cache",
         ".clangd",
-        ".clang-tidy",
-        ".clang-format",
-        "compile_commands.json",
-        "compile_flags.txt",
-        "configure.ac", -- AutoTools
         ".git",
+        "bin",
     },
     init_option = {
         fallbackFlags = {

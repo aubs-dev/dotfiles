@@ -36,9 +36,6 @@ opt.showcmd = true
 opt.ignorecase = true
 opt.smartcase = true
 
--- Filetypes
-vim.g.c_syntax_for_h = 1
-
 -- Window management
 opt.splitright = true
 opt.splitbelow = true
