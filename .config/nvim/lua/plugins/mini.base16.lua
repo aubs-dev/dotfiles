@@ -84,7 +84,7 @@ return {
         hi("SignColumn", { bg = gruvbox.bg1 })
         hi("CursorLineSign", { bg = gruvbox.bg4 })
 
-        hi("Operator", { fg = gruvbox.orange })
+        hi("Operator", { fg = gruvbox.fg3 })
 
         hi("DiagnosticError", { fg = gruvbox.red, bg = gruvbox.bg1 })
         hi("DiagnosticWarn", { fg = gruvbox.yellow, bg = gruvbox.bg1 })
@@ -114,12 +114,23 @@ return {
         hi("DiagnosticDeprecated", { sp = gruvbox.red, strikethrough = true })
 
         -- [treesitter]
-        hi("@keyword.return", { fg = gruvbox.red })
-        hi("@string.regexp.lua", { fg = gruvbox.orange })
-        hi("@string.escape.lua", { fg = gruvbox.orange })
+        -- General
+        hi("@keyword.return", { fg = p.base0E })
+        -- C
+        hi("@constant.builtin.c", { fg = p.base09 })
+        -- C++
+        hi("@function.builtin.cpp", { fg = p.base0E })
+        -- Lua
+        hi("@string.regexp.lua", { fg = p.base09 })
+        hi("@string.escape.lua", { fg = p.base09 })
+
+        -- [lsp]
+        -- hi("", { fg = gruvbox. })
+        hi("@module.cpp", { fg = gruvbox.orange })
+        hi("@lsp.type.namespace.cpp", { link = "@module.cpp" })
 
         -- [indent-blankline]
-        hi("IblIndent", { fg = gruvbox.bg1 })
+        hi("IblIndent", { fg = p.base01 })
 
         -- [mini.tabline]
         hi("MiniTablineCurrent",         { fg = gruvbox.bg1, bg = gruvbox.fg1 })
@@ -134,6 +145,6 @@ return {
         hi("MiniTablineTrunc",           { fg = gruvbox.bg0, bg = gruvbox.orange })
 
         -- [mini.trailspace]
-        hi("MiniTrailspace", { bg = gruvbox.red })
+        hi("MiniTrailspace", { bg = gruvbox.gray })
     end,
 }
