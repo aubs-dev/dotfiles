@@ -118,14 +118,17 @@ return {
         hi("@keyword.return", { fg = p.base0E })
         -- C
         hi("@constant.builtin.c", { fg = p.base09 })
+        hi("@character.c", { link = "@string.c" })
+        hi("@string.escape.c", { fg = p.base09 })
         -- C++
         hi("@function.builtin.cpp", { fg = p.base0E })
+        hi("@character.cpp", { link = "@string.cpp" })
+        hi("@string.escape.cpp", { link = "@string.escape.c" })
         -- Lua
-        hi("@string.regexp.lua", { fg = p.base09 })
-        hi("@string.escape.lua", { fg = p.base09 })
+        hi("@string.regexp.lua", { link = "@string.escape.c" })
+        hi("@string.escape.lua", { link = "@string.escape.c" })
 
         -- [lsp]
-        -- hi("", { fg = gruvbox. })
         hi("@module.cpp", { fg = gruvbox.orange })
         hi("@lsp.type.namespace.cpp", { link = "@module.cpp" })
 
