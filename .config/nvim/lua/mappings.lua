@@ -8,7 +8,7 @@ local opts = { noremap = true, silent = true }
 -- -------------------------------------------
 
 function SaveAllFiles()
-    api.nvim_command("silent! wa")
+    vim.cmd("silent! wa")
     local currentTime = os.date("%H:%M:%S")
     print("Files Saved - " .. currentTime)
 end
@@ -34,14 +34,19 @@ end
 -- -------------------------------------------
 
 -- Clear search & highlight
-keymap.set("n", "<Esc>", ":nohl<CR>:echo ''<CR>", opts)
+keymap.set("n", "<Esc>", function()
+	vim.cmd("noh")
+	vim.cmd("echo ''")
+	vim.snippet.stop()
+	return "<Esc>"
+end)
 
 -- Leave terminal mode by hitting esc
 keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 
 -- Move current line up or down
-keymap.set("n", "<A-Up>", ":move -2<cr>", opts)
-keymap.set("n", "<A-Down>", ":move +1<cr>", opts)
+keymap.set("n", "<A-Up>", ":move -2<CR>", opts)
+keymap.set("n", "<A-Down>", ":move +1<CR>", opts)
 
 -- Saving and quitting
 keymap.set("n", "<C-s>", ":lua SaveAllFiles()<CR>", opts)
@@ -80,7 +85,7 @@ keymap.set("n", "<leader>ll", ":Lazy<CR>", opts) -- [L]azy [L]ist
 keymap.set("n", "<leader>lu", ":Lazy update<CR>", opts) -- [L]azy [U]pdate
 
 -- Oil file exporer
-keymap.set("n", "<leader>fv", ":lua vim.api.nvim_command('Oil ' .. GetBufferDirectory())<CR>", opts) -- [F]ile [V]iew
+keymap.set("n", "<leader>fv", ":lua vim.cmd('Oil ' .. GetBufferDirectory())<CR>", opts) -- [F]ile [V]iew
 
 -- Telescope
 keymap.set("n", "<leader>km", ":Telescope keymaps<CR>", opts) -- [K]ey [M]appings
