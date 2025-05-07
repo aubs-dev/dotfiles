@@ -39,7 +39,7 @@ keymap.set("n", "<Esc>", function()
 	vim.cmd("echo ''")
 	vim.snippet.stop()
 	return "<Esc>"
-end)
+end, opts)
 
 -- Leave terminal mode by hitting esc
 keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
@@ -98,7 +98,14 @@ keymap.set("n", "<leader>fw", ":Telescope grep_string<CR>", opts) -- [F]ind [W]o
 keymap.set("n", "<leader>fb", ":lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({previewer=false}))<CR>", opts) -- [F]ind [B]uffer
 
 -- Language Server (LSP)
-keymap.set("n", "<leader>lsp", ":checkhealth vim.lsp<CR>", opts) -- [L]anguage [S]erver
+keymap.set("n", "<leader>lsi", ":checkhealth vim.lsp<CR>", opts) -- [L]anguage [S]erver [I]nfo
+keymap.set("n", "<leader>lss", function () -- [L]anguage [S]erver [S]top
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+        client:stop(true)
+    end
+
+    vim.notify("No language server found in buffer!", vim.log.levels.INFO)
+end, opts)
 
 keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown{layout_config = {width = 0.9}})<CR>", opts) -- [F]ind [D]iagnostics
 keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences

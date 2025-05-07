@@ -23,7 +23,7 @@ return {
     },
     init_option = {
         fallbackFlags = {
-            "-std=c++20"
+            "-std=c++20",
         },
     },
 }
