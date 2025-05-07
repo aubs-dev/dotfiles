@@ -111,7 +111,7 @@ return {
         hi("DiagnosticSignInfo", { link = "DiagnosticInfo" })
         hi("DiagnosticSignHint", { link = "DiagnosticHint" })
         hi("DiagnosticSignOk", { link = "DiagnosticOk" })
-        hi("DiagnosticDeprecated", { sp = gruvbox.red, strikethrough = true })
+        hi("DiagnosticDeprecated", { fg = nil, bg = nil, strikethrough = false })
 
         -- [treesitter]
         -- General
