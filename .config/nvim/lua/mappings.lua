@@ -71,10 +71,14 @@ keymap.set("n", "<leader>aa", "<C-w>h", opts)
 keymap.set("n", "<leader>dd", "<C-w>l", opts)
 
 -- Window tabs
-keymap.set("n", "<leader>to", ":tabnew<CR>", opts)   -- [T]ab [O]pen
-keymap.set("n", "<leader>tc", ":tabclose<CR>", opts) -- [T]ab [C]lose
-keymap.set("n", "<leader>tn", ":tabn<CR>", opts)     -- [T]ab [N]ext
-keymap.set("n", "<leader>tp", ":tabp<CR>", opts)     -- [T]ab [P]revious
+keymap.set("n", "to", ":tabnew<CR>", opts)   -- [T]ab [O]pen
+keymap.set("n", "tc", ":tabclose<CR>", opts) -- [T]ab [C]lose
+keymap.set("n", "tn", ":tabn<CR>", opts)     -- [T]ab [N]ext
+keymap.set("n", "tp", ":tabp<CR>", opts)     -- [T]ab [P]revious
+
+-- Quickfix Lists
+keymap.set("n", "cn", ":cnext<CR>", opts) -- [C]ount [N]ext
+keymap.set("n", "cp", ":cprev<CR>", opts) -- [C]ount [P]revious
 
 -- -------------------------------------------
 -- Plugin Keybinds
@@ -100,7 +104,7 @@ keymap.set("n", "<leader>fb", ":lua require('telescope.builtin').buffers(require
 -- Language Server (LSP)
 keymap.set("n", "<leader>lsi", ":checkhealth vim.lsp<CR>", opts) -- [L]anguage [S]erver [I]nfo
 keymap.set("n", "<leader>lss", function () -- [L]anguage [S]erver [S]top
-    for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+    for _, client in ipairs(vim.lsp.get_clients()) do
         client:stop(true)
     end
 
