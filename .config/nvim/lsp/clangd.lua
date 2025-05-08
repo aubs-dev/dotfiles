@@ -2,7 +2,7 @@
 
 return {
     cmd = {
-        "clangd.exe",
+        "clangd",
         "--all-scopes-completion",
         "--background-index",
         "--completion-style=detailed",
@@ -20,6 +20,7 @@ return {
         ".clangd",
         ".git",
         "bin",
+        "build",
     },
     init_option = {
         fallbackFlags = {
