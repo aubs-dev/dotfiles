@@ -29,17 +29,17 @@ function GetBufferDirectory()
     return vim.fn.fnameescape(path)
 end
 
+function ClearAllHighlights()
+    vim.cmd("noh")
+	vim.snippet.stop()
+end
+
 -- -------------------------------------------
 -- Default Keybinds
 -- -------------------------------------------
 
--- Clear search & highlight
-keymap.set("n", "<Esc>", function()
-	vim.cmd("noh")
-	vim.cmd("echo ''")
-	vim.snippet.stop()
-	return "<Esc>"
-end, opts)
+-- Clear all search related highlights
+keymap.set({"n", "i", "s"}, "<Esc>", "<Esc>:lua ClearAllHighlights()<CR>", opts)
 
 -- Leave terminal mode by hitting esc
 keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
