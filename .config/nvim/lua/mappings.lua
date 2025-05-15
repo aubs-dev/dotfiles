@@ -31,7 +31,8 @@ end
 
 function ClearAllHighlights()
     vim.cmd("noh")
-	vim.snippet.stop()
+    vim.snippet.stop()
+    vim.notify("", vim.log.levels.INFO)
 end
 
 -- -------------------------------------------
@@ -111,7 +112,7 @@ keymap.set("n", "<leader>lss", function () -- [L]anguage [S]erver [S]top
     vim.notify("No language server found in buffer!", vim.log.levels.INFO)
 end, opts)
 
-keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown{layout_config = {width = 0.9}})<CR>", opts) -- [F]ind [D]iagnostics
+keymap.set("n", "<leader>fd", ":lua require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown{layout_config = {width = 0.9}, no_unlisted = true, line_width = 'full', disable_coordinates = true})<CR>", opts) -- [F]ind [D]iagnostics
 keymap.set("n", "<leader>fr", ":Telescope lsp_references theme=dropdown<CR>", opts) -- [F]ind [R]eferences
 keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts) -- [G]oto [D]efinition
 keymap.set("n", "<leader>ds", ":Telescope lsp_document_symbols theme=dropdown<CR>", opts) -- [D]ocument [S]ymbols

@@ -28,7 +28,7 @@ opt.updatetime = 100
 opt.mousemodel = "extend"
 
 -- Text & Clipboard
--- opt.iskeyword:append("-") -- Consider dash as part of a word
+opt.iskeyword:append(":")
 opt.clipboard:append("unnamedplus") -- Use system clipboard
 
 -- Cmd & Search

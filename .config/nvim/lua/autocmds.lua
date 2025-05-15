@@ -69,10 +69,6 @@ for i = 2, #argv do -- Skip argv[1]
 end
 
 if targetDir then
-    -- create (or clear) an augroup called "CdToArg"
-    local grp = vim.api.nvim_create_augroup("CdToArg", { clear = true })  -- :contentReference[oaicite:6]{index=6}
-
-    -- on VimEnter, change working directory
     autocmd("VimEnter", {
         group = general,
         callback = function()
@@ -80,3 +76,16 @@ if targetDir then
         end,
     })
 end
+
+-- Consider underscores as part of a new word (only in Visual modes)
+autocmd("ModeChanged", {
+    group = general,
+    callback = function()
+        local mode = vim.fn.mode()
+        if mode == "v" or mode == "\22" then -- 'v' for Visual & '\22' for Visual Block
+            vim.opt.iskeyword:remove("_") -- Remove underscore from keywords
+        else
+            vim.opt.iskeyword:append("_") -- Restore underscore as part of keywords
+        end
+    end,
+})
