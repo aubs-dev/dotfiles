@@ -1,6 +1,6 @@
 return {
     "saghen/blink.cmp",
-    tag = "v1.1.1",
+    tag = "v1.3.1",
     event = "InsertEnter",
     opts = {
         completion = {
