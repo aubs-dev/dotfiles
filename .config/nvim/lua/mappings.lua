@@ -49,6 +49,9 @@ keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 keymap.set("n", "<A-Up>", ":move -2<CR>", opts)
 keymap.set("n", "<A-Down>", ":move +1<CR>", opts)
 
+-- Create a newline without entering insert mode
+keymap.set("n", "<A-o>", ":a<CR><CR>.<CR>", opts)
+
 -- Saving and quitting
 keymap.set("n", "<C-s>", ":lua SaveAllFiles()<CR>", opts)
 keymap.set("i", "<C-s>", "<Esc>:lua SaveAllFiles()<CR>", opts)
