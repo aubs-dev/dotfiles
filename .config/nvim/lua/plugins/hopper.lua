@@ -3,7 +3,7 @@ return {
     cmd = { "Hopper" },
     opts = {
         dirs = {
-            "C:/Dev/projects/c-cpp/game",
+            "C:/Dev/projects/c-cpp/3d-game",
             "C:/Dev/dotfiles/.config/nvim",
             "C:/Dev/projects/lua/nvim-plugins",
         },
