@@ -5,10 +5,9 @@ return {
         "clangd",
         "--all-scopes-completion",
         "--background-index",
-        "--completion-style=detailed",
+        "--completion-style=bundled",
         "-j=4",
         "--pch-storage=memory",
-        "--pretty",
         -- "--log=verbose",
     },
     filetypes = {

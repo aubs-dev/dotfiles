@@ -1,10 +1,11 @@
 return {
     "aubs-dev/task-runner.nvim",
+    dev = true,
     lazy = true,
     opts = {
         tasks = {
-            "run",
-            "asset-forge",
+            "game",
+            "forge",
             "clean",
         }
     },

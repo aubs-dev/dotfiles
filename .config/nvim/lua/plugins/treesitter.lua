@@ -23,6 +23,7 @@ return {
                 "make",
                 "cmake",
                 "glsl",
+                "hlsl",
                 "odin",
             },
             auto_install = true,
