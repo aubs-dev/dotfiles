@@ -31,7 +31,7 @@
 
 ; --- Focus Runelite
 #]:: ; Windows + Enter
-    windowTitle := "RuneLite - HistoricClio"
+    windowTitle := "RuneLite - ChariotNord"
     WinGet, windowState, MinMax, %windowTitle%
 
     if (windowState = -1) {
